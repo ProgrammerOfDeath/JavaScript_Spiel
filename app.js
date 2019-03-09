@@ -2,7 +2,7 @@
 var can = document.getElementById("game");
 var context = can.getContext("2d");
 var x = can.width / 2;
-var y = can.height - 30;
+var y = can.height - 40;
 var dx = 2;
 var dy = -2;
 var radius = 15 ;
@@ -81,18 +81,28 @@ function loop() {
     drawBall();
     drawPlate();
     
+	
+	//draw the targets many times
     for(var i = 0; i<5; i++){
         targetX = i*100+20;
         drawTarget();
     }
     
+	//Collision Detection
     if (x + dx > can.width - radius || x + dx < radius) {
         dx = -dx;
     }
-    if (y + dy < radius) {
-        dy = -dy;
-    }
-    
+    if (y + dy < radius || (y + dy > can.height - plateHeigth - radius &&
+						   x + dx > plateX &&
+						   x + dx < plateX + plateWidth))
+	{
+	   dy = -dy;
+	}
+	
+	if(y+dy>can.height){
+		location.reload();
+	}
+	
     
     //Movement Plate right
     if (plateX > can.width - plateWidth) {
@@ -108,6 +118,7 @@ function loop() {
         plateX -= plateDx;
     }
     
+	//Move the ball
     x += dx;
     y += dy;
     requestAnimationFrame(loop);
