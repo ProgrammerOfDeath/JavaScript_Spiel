@@ -22,9 +22,20 @@ var left = 37;
 
 //Variable for Target
 var targetX;
-var targetY = 10;
+var targetY;
+var targetPedding = 15;
 var targetWidth = plateWidth;
 var targetHeight = plateHeigth;
+var targetRow = 3;
+var targetCol = 5;
+var targets = [];
+
+for(var i = 0; i<targetCol;i++){
+    targets[i] = [];
+    for(var j = 0; j<targetRow; j++){
+        targets[i][j] = {x: 0, y: 0, status: 1};
+    }
+}
 
 //Draw the Ball
 function drawBall() {
@@ -45,12 +56,42 @@ function drawPlate(){
 }
 
 //Draw the Target-Plates
-function drawTarget(){
-    context.beginPath();
-    context.rect(targetX, targetY, targetWidth, targetHeight);
-    context.fillStyle = "#aaa";
-    context.fill();
-    context.closePath();
+function drawTargets(){
+    for(var i = 0; i<targets.length; i++){
+        for(var j = 0; j<targets[i].length; j++){
+            if(targets[i][j].status === 1){
+                //Size of Targets
+                targetX = (i*(targetWidth+targetPedding))+30;
+                targetY = (j*(targetHeight+targetPedding))+30;
+                targets[i][j].x = targetX;
+                targets[i][j].y = targetY;
+                //Draw Targets
+                context.beginPath();
+                context.rect(targets[i][j].x, targets[i][j].y, targetWidth, targetHeight);
+                context.fillStyle = "#aaa";
+                context.fill();
+                context.closePath();
+            }
+        }
+    }
+}
+
+//Proof for collision with Target
+function collision(){
+    for(var i = 0; i<targetCol; i++){
+        for(var j = 0; j<targetRow; j++){
+            var tar_help = targets[i][j];
+            if(tar_help.status === 1 &&
+               x > tar_help.x &&
+               x < tar_help.x + targetWidth &&
+               y > tar_help.y && 
+               y < tar_help.y + targetHeight)
+            {
+                dy = -dy;
+                targets[i][j].status = 0;
+            }
+        }
+    }
 }
 
 //Key-Handler
@@ -78,17 +119,17 @@ document.addEventListener('keyup', keyReleasedHandler, false);
 function loop() {
     context.clearRect(0, 0, can.width, can.height);
     
+    //Implements Functions
     drawBall();
     drawPlate();
+    drawTargets();
+    collision();
     
-	
-	//draw the targets many times
-    for(var i = 0; i<5; i++){
-        targetX = i*100+20;
-        drawTarget();
-    }
+    context.font = "20px Helvetica"
+    context.fontStyle = "aaa";
+    context.fillText("Hallo", 10, 10);
     
-	//Collision Detection
+	//Collision Detection Frame
     if (x + dx > can.width - radius || x + dx < radius) {
         dx = -dx;
     }
@@ -97,26 +138,24 @@ function loop() {
 						   x + dx < plateX + plateWidth))
 	{
 	   dy = -dy;
-	}
+	}else if(y + dy > can.height){
+        alert('NEUSTART');
+        document.location.reload();
+    }
 	
-	if(y+dy>can.height){
-		location.reload();
-	}
 	
     
-    //Movement Plate right
-    if (plateX > can.width - plateWidth) {
-        //do nothing
-    } else if (pressRight) {
-        plateX += plateDx;
-    } 
+   
+    //Movement Right
+    if(pressRight && plateX < can.width - plateWidth){
+       plateX += plateDx;
+    }
     
-    //Movement Plate left
-    if (plateX < 0){
-        //do nothing
-    }else if(pressLeft){
+    //Movement Left
+    if(pressLeft && plateX > 0){
         plateX -= plateDx;
     }
+    
     
 	//Move the ball
     x += dx;
