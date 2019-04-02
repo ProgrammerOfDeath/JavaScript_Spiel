@@ -1,3 +1,4 @@
+//Variables --------------------------------------------------------------
 //Variables of Canvas and Ball
 var can = document.getElementById("game");
 var context = can.getContext("2d");
@@ -29,6 +30,7 @@ var targetHeight = plateHeigth;
 var targetRow = 3;
 var targetCol = 5;
 var targets = [];
+var targetCount = targetRow * targetCol;
 
 for(var i = 0; i<targetCol;i++){
     targets[i] = [];
@@ -37,6 +39,8 @@ for(var i = 0; i<targetCol;i++){
     }
 }
 
+
+//Functions --------------------------------------------------------------
 //Draw the Ball
 function drawBall() {
     context.beginPath();
@@ -89,6 +93,7 @@ function collision(){
             {
                 dy = -dy;
                 targets[i][j].status = 0;
+				targetCount-=1;
             }
         }
     }
@@ -115,16 +120,19 @@ document.addEventListener('keydown', keyPressedHandler, false);
 document.addEventListener('keyup', keyReleasedHandler, false);
 
 
-//Game Loop
+//Game Loop --------------------------------------------------------------
 function loop() {
     context.clearRect(0, 0, can.width, can.height);
     
-    //Implements Functions
+    //Implement functions
     drawBall();
     drawPlate();
     drawTargets();
-    collision();
+    collision(); //Collision Detection Targets
+	
+	//console.log(targetCount);
     
+	//Draw Text
     context.font = "20px Helvetica"
     context.fontStyle = "aaa";
     context.fillText("Hallo", 10, 10);
@@ -143,6 +151,11 @@ function loop() {
         document.location.reload();
     }
 	
+	//Reload if all targets destroyed
+	if(targetCount == 0){
+	   document.location.reload();
+	}
+	
 	
     
    
@@ -156,6 +169,7 @@ function loop() {
         plateX -= plateDx;
     }
     
+	
     
 	//Move the ball
     x += dx;
