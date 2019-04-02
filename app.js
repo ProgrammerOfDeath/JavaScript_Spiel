@@ -148,12 +148,13 @@ function loop() {
 	   dy = -dy;
 	}else if(y + dy > can.height){
         alert('NEUSTART');
-        document.location.reload();
+        location.reload();
     }
 	
 	//Reload if all targets destroyed
 	if(targetCount == 0){
-	   document.location.reload();
+		alert('ALLE GETROFFEN');
+		location.reload();
 	}
 	
 	
