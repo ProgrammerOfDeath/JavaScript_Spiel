@@ -88,7 +88,7 @@ function collision(){
             if(tar_help.status === 1 &&
                x > tar_help.x &&
                x < tar_help.x + targetWidth &&
-               y > tar_help.y && 
+               y > tar_help.y &&
                y < tar_help.y + targetHeight)
             {
                 dy = -dy;
@@ -123,20 +123,20 @@ document.addEventListener('keyup', keyReleasedHandler, false);
 //Game Loop --------------------------------------------------------------
 function loop() {
     context.clearRect(0, 0, can.width, can.height);
-    
+
     //Implement functions
     drawBall();
     drawPlate();
     drawTargets();
     collision(); //Collision Detection Targets
-	
+
 	//console.log(targetCount);
-    
+
 	//Draw Text
     context.font = "20px Helvetica"
     context.fontStyle = "aaa";
     context.fillText("Hallo", 10, 10);
-    
+
 	//Collision Detection Frame
     if (x + dx > can.width - radius || x + dx < radius) {
         dx = -dx;
@@ -150,28 +150,28 @@ function loop() {
         alert('NEUSTART');
         location.reload();
     }
-	
+
 	//Reload if all targets destroyed
 	if(targetCount == 0){
 		alert('ALLE GETROFFEN');
 		location.reload();
 	}
-	
-	
-    
-   
+
+
+
+
     //Movement Right
     if(pressRight && plateX < can.width - plateWidth){
        plateX += plateDx;
     }
-    
+
     //Movement Left
     if(pressLeft && plateX > 0){
         plateX -= plateDx;
     }
-    
-	
-    
+
+
+
 	//Move the ball
     x += dx;
     y += dy;
