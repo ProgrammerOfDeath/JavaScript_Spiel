@@ -1,5 +1,5 @@
 //Variables --------------------------------------------------------------
-//Variables of Canvas and Ball
+//Variables of canvas and ball
 var can = document.getElementById("game");
 var context = can.getContext("2d");
 var x = can.width / 2;
@@ -8,20 +8,20 @@ var dx = 2;
 var dy = -2;
 var radius = 15 ;
 
-//Variables of the Plate
+//Variables of the plate
 var plateWidth = 80;
 var plateHeigth = 20;
 var plateX = (can.width - plateWidth) / 2;
 var plateY = can.height - plateHeigth;
 var plateDx = 5; //Speed for Plate-Movement
 
-//Variables for Movement
+//Variables for movement
 var pressRight;
 var pressLeft;
 var right = 39;
 var left = 37;
 
-//Variable for Target
+//Variable for target
 var targetX;
 var targetY;
 var targetPedding = 15;
@@ -41,7 +41,7 @@ for(var i = 0; i<targetCol;i++){
 
 
 //Functions --------------------------------------------------------------
-//Draw the Ball
+//Draw the ball
 function drawBall() {
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2);
@@ -50,7 +50,7 @@ function drawBall() {
     context.closePath();
 }
 
-//Draw the Plate
+//Draw the plate
 function drawPlate(){
     context.beginPath();
     context.rect(plateX, plateY, plateWidth, plateHeigth);
@@ -59,7 +59,7 @@ function drawPlate(){
     context.closePath();
 }
 
-//Draw the Target-Plates
+//Draw the target-plates
 function drawTargets(){
     for(var i = 0; i<targets.length; i++){
         for(var j = 0; j<targets[i].length; j++){
@@ -80,7 +80,7 @@ function drawTargets(){
     }
 }
 
-//Proof for collision with Target
+//Check collision with target
 function collision(){
     for(var i = 0; i<targetCol; i++){
         for(var j = 0; j<targetRow; j++){
@@ -128,11 +128,11 @@ function loop() {
     drawBall();
     drawPlate();
     drawTargets();
-    collision(); //Collision Detection Targets
+    collision(); //Collision Detection for targets
 
 	//console.log(targetCount);
 
-	//Draw Text
+	//Draw text
     context.font = "20px Helvetica"
     context.fontStyle = "aaa";
     context.fillText("Hallo", 10, 10);
@@ -151,7 +151,7 @@ function loop() {
         location.reload();
     }
 
-	//Reload if all targets destroyed
+	//Reload if all targets have been destroyed
 	if(targetCount == 0){
 		alert('ALLE GETROFFEN');
 		location.reload();
@@ -160,12 +160,12 @@ function loop() {
 
 
 
-    //Movement Right
+    //Movement right
     if(pressRight && plateX < can.width - plateWidth){
        plateX += plateDx;
     }
 
-    //Movement Left
+    //Movement left
     if(pressLeft && plateX > 0){
         plateX -= plateDx;
     }
